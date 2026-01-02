@@ -1,22 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import API from '../api/axios';
 import AdminProductForm from '../components/AdminProductForm';
+import SearchInput from '../components/SearchInput';
 
 const AdminDashboard: React.FC = () => {
     const [products, setProducts] = useState<any[]>([]);
     const [orders, setOrders] = useState<any[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     const fetchAll = async () => {
-        const [pRes, oRes] = await Promise.all([API.get('/products'), API.get('/orders')]);
+        const params = new URLSearchParams();
+        if (searchQuery.trim()) {
+            params.append('search', searchQuery.trim());
+        }
+        const [pRes, oRes] = await Promise.all([
+            API.get(`/products?${params.toString()}`), 
+            API.get('/orders')
+        ]);
         setProducts(pRes.data);
         setOrders(oRes.data);
     };
 
-    useEffect(()=> { fetchAll(); }, []);
+    useEffect(()=> { fetchAll(); }, [searchQuery]);
 
     const handleDelete = async (id: string) => {
         if (!confirm('Delete product?')) return;
         await API.delete(`/products/${id}`);
+        fetchAll();
+    };
+
+    const handleToggleFamous = async (id: string, currentStatus: boolean) => {
+        await API.put(`/products/${id}`, { isFamous: !currentStatus });
         fetchAll();
     };
 
@@ -32,6 +46,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="lg:col-span-2 space-y-6">
                     <section>
                         <h3 className="font-semibold">Products</h3>
+                        <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search products by name, description, or ingredients..." />
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                             {products.map(p => (
                                 <div key={p._id} className="border p-2 rounded">
@@ -40,8 +55,15 @@ const AdminDashboard: React.FC = () => {
                                         <div>
                                             <h4 className="font-semibold">{p.name}</h4>
                                             <p className="text-sm">{p.category}</p>
+                                            {p.isFamous && <span className="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded">⭐ Famous</span>}
                                         </div>
-                                        <div>
+                                        <div className="flex gap-2">
+                                            <button 
+                                                onClick={()=>handleToggleFamous(p._id, p.isFamous || false)} 
+                                                className={`px-2 py-1 rounded text-white ${p.isFamous ? 'bg-yellow-500' : 'bg-gray-500'}`}
+                                            >
+                                                {p.isFamous ? '⭐ Famous' : 'Mark Famous'}
+                                            </button>
                                             <button onClick={()=>handleDelete(p._id)} className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
                                         </div>
                                     </div>

@@ -8,15 +8,17 @@ const AdminProductForm: React.FC<{ onCreated: ()=>void }> = ({ onCreated }) => {
     const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState('');
     const [alcoholBrands, setAlcoholBrands] = useState('');
+    const [isFamous, setIsFamous] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await API.post('/products', {
             name, image, category, description,
             ingredients: ingredients.split(',').map(s=>s.trim()).filter(Boolean),
-            alcoholBrands: alcoholBrands.split(',').map(s=>s.trim()).filter(Boolean)
+            alcoholBrands: alcoholBrands.split(',').map(s=>s.trim()).filter(Boolean),
+            isFamous
         });
-        setName(''); setImage(''); setDescription(''); setIngredients(''); setAlcoholBrands('');
+        setName(''); setImage(''); setDescription(''); setIngredients(''); setAlcoholBrands(''); setIsFamous(false);
         onCreated();
     };
 
@@ -33,6 +35,10 @@ const AdminProductForm: React.FC<{ onCreated: ()=>void }> = ({ onCreated }) => {
             <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="Description" className="w-full border p-2" />
             <input value={ingredients} onChange={e=>setIngredients(e.target.value)} placeholder="Ingredients (comma separated)" className="w-full border p-2" />
             <input value={alcoholBrands} onChange={e=>setAlcoholBrands(e.target.value)} placeholder="Alcohol brands (comma separated, for custom)" className="w-full border p-2" />
+            <label className="flex items-center gap-2">
+                <input type="checkbox" checked={isFamous} onChange={e=>setIsFamous(e.target.checked)} className="w-4 h-4" />
+                <span>Mark as Famous Item</span>
+            </label>
             <button className="bg-blue-600 text-white px-3 py-2 rounded">Create</button>
         </form>
     );
