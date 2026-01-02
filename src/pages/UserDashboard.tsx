@@ -26,17 +26,19 @@ const UserDashboard: React.FC = () => {
     };
 
     return (
-        <div className="p-4">
-            <h2 className="text-2xl font-bold">Welcome</h2>
-            <p className="mt-2 mb-6">Select a category from the navbar to browse juices, cocktails or custom mixes.</p>
+        <div className="p-6 max-w-7xl mx-auto">
+            <div className="text-center mb-8">
+                <h2 className="text-4xl font-bold text-black mb-3">Welcome to Juice Bar</h2>
+                <p className="text-lg text-gray-700">Select a category from the navbar to browse juices, cocktails or custom mixes.</p>
+            </div>
             
             {famousProducts.length > 0 && (
-                <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <span>⭐</span>
+                <div className="mt-8">
+                    <h3 className="text-3xl font-bold mb-6 flex items-center justify-center gap-3 text-black">
+                        <span className="text-yellow-400 text-4xl">⭐</span>
                         <span>Famous Items</span>
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {famousProducts.map(p => (
                             <ProductCard key={p._id} product={p} onClick={setSelected} />
                         ))}

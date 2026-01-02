@@ -27,10 +27,10 @@ const Cocktail: React.FC = () => {
     };
 
     return (
-        <div className="p-4">
-            <h2 className="text-2xl">Cocktail</h2>
+        <div className="p-6 max-w-7xl mx-auto">
+            <h2 className="text-4xl font-bold text-black mb-6">🍹 Cocktails</h2>
             <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search cocktails by name, description, or ingredients..." />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 {products.map(p => <ProductCard key={p._id} product={p} onClick={setSelected} />)}
             </div>
             {selected && <ProductModal product={selected} onClose={()=>setSelected(null)} onBuy={buy} />}

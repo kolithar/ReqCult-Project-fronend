@@ -24,14 +24,16 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="p-4 max-w-md mx-auto">
-            <h2 className="text-2xl mb-4">Login</h2>
-            {err && <div className="bg-red-100 text-red-700 p-2 mb-2 rounded">{err}</div>}
-            <form onSubmit={submit} className="flex flex-col gap-2">
-                <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" className="border p-2" />
-                <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" className="border p-2" />
-                <button className="bg-blue-600 text-white p-2 rounded">Login</button>
-            </form>
+        <div className="p-6 max-w-md mx-auto mt-8">
+            <div className="bg-white rounded-lg shadow-2xl border-4 border-yellow-400 p-8">
+                <h2 className="text-3xl font-bold text-black mb-6 text-center">Login</h2>
+                {err && <div className="bg-red-100 text-red-700 p-3 mb-4 rounded-lg border-2 border-red-400">{err}</div>}
+                <form onSubmit={submit} className="flex flex-col gap-4">
+                    <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" className="border-2 border-yellow-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black" />
+                    <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" className="border-2 border-yellow-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black" />
+                    <button className="bg-yellow-400 text-black p-3 rounded-lg font-bold hover:bg-yellow-300 transition-colors shadow-lg">Login</button>
+                </form>
+            </div>
         </div>
     );
 };

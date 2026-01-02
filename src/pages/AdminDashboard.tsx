@@ -35,36 +35,36 @@ const AdminDashboard: React.FC = () => {
     };
 
     return (
-        <div className="p-4">
-            <h2 className="text-2xl">Admin Panel</h2>
+        <div className="p-6 max-w-7xl mx-auto">
+            <h2 className="text-4xl font-bold text-black mb-6">Admin Panel</h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-4">
                 <div className="lg:col-span-1">
                     <AdminProductForm onCreated={fetchAll} />
                 </div>
 
                 <div className="lg:col-span-2 space-y-6">
-                    <section>
-                        <h3 className="font-semibold">Products</h3>
+                    <section className="bg-white rounded-lg shadow-lg border-4 border-yellow-400 p-6">
+                        <h3 className="text-2xl font-bold text-black mb-4">Products</h3>
                         <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder="Search products by name, description, or ingredients..." />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                             {products.map(p => (
-                                <div key={p._id} className="border p-2 rounded">
-                                    <img src={p.image} alt={p.name} className="h-36 w-full object-cover" />
-                                    <div className="flex justify-between items-center mt-2">
+                                <div key={p._id} className="bg-white border-2 border-yellow-400 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                                    <img src={p.image} alt={p.name} className="h-36 w-full object-cover rounded-lg" />
+                                    <div className="flex justify-between items-center mt-3">
                                         <div>
-                                            <h4 className="font-semibold">{p.name}</h4>
-                                            <p className="text-sm">{p.category}</p>
-                                            {p.isFamous && <span className="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded">⭐ Famous</span>}
+                                            <h4 className="font-bold text-black">{p.name}</h4>
+                                            <p className="text-sm text-gray-600">{p.category}</p>
+                                            {p.isFamous && <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded font-semibold mt-1 inline-block">⭐ Famous</span>}
                                         </div>
                                         <div className="flex gap-2">
                                             <button 
                                                 onClick={()=>handleToggleFamous(p._id, p.isFamous || false)} 
-                                                className={`px-2 py-1 rounded text-white ${p.isFamous ? 'bg-yellow-500' : 'bg-gray-500'}`}
+                                                className={`px-3 py-1 rounded-lg text-white font-semibold ${p.isFamous ? 'bg-yellow-400 text-black hover:bg-yellow-300' : 'bg-gray-600 hover:bg-gray-700'}`}
                                             >
-                                                {p.isFamous ? '⭐ Famous' : 'Mark Famous'}
+                                                {p.isFamous ? '⭐' : '⭐'}
                                             </button>
-                                            <button onClick={()=>handleDelete(p._id)} className="px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+                                            <button onClick={()=>handleDelete(p._id)} className="px-3 py-1 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -72,25 +72,25 @@ const AdminDashboard: React.FC = () => {
                         </div>
                     </section>
 
-                    <section>
-                        <h3 className="font-semibold">Orders</h3>
+                    <section className="bg-white rounded-lg shadow-lg border-4 border-yellow-400 p-6">
+                        <h3 className="text-2xl font-bold text-black mb-4">Orders</h3>
                         <div className="mt-2 overflow-x-auto">
-                            <table className="w-full table-auto border">
-                                <thead className="bg-slate-100">
+                            <table className="w-full table-auto border-2 border-yellow-400">
+                                <thead className="bg-yellow-400">
                                 <tr>
-                                    <th className="p-2 border">User</th>
-                                    <th className="p-2 border">Product</th>
-                                    <th className="p-2 border">Amount</th>
-                                    <th className="p-2 border">Date</th>
+                                    <th className="p-3 border-2 border-yellow-600 text-black font-bold">User</th>
+                                    <th className="p-3 border-2 border-yellow-600 text-black font-bold">Product</th>
+                                    <th className="p-3 border-2 border-yellow-600 text-black font-bold">Amount</th>
+                                    <th className="p-3 border-2 border-yellow-600 text-black font-bold">Date</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {orders.map(o => (
-                                    <tr key={o._id} className="border-t">
-                                        <td className="p-2 border">{o.userId?.email}</td>
-                                        <td className="p-2 border">{o.productId?.name}</td>
-                                        <td className="p-2 border">{o.totalAmount}</td>
-                                        <td className="p-2 border">{new Date(o.createdAt).toLocaleString()}</td>
+                                    <tr key={o._id} className="border-t-2 border-yellow-400 hover:bg-yellow-50">
+                                        <td className="p-3 border-2 border-yellow-400 text-black">{o.userId?.email}</td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black font-semibold">{o.productId?.name}</td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black font-bold text-yellow-600">${o.totalAmount}</td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black">{new Date(o.createdAt).toLocaleString()}</td>
                                     </tr>
                                 ))}
                                 </tbody>

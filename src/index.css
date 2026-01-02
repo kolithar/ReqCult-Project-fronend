@@ -4,4 +4,33 @@
 
 body {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(to bottom, #fef3c7, #ffffff);
+    min-height: 100vh;
+}
+
+/* Juice Bar Theme Colors */
+:root {
+    --juice-yellow: #fbbf24;
+    --juice-yellow-light: #fef3c7;
+    --juice-yellow-dark: #f59e0b;
+    --juice-black: #1f2937;
+    --juice-white: #ffffff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--juice-yellow-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--juice-yellow);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--juice-yellow-dark);
 }
