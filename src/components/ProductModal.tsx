@@ -9,6 +9,9 @@ const ProductModal: React.FC<Props> = ({ product, onClose, onBuy, onSelectAlcoho
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
             <div className="bg-white w-[92%] sm:w-96 rounded-lg shadow-2xl border-4 border-yellow-400 p-6">
                 <h2 className="text-2xl font-bold text-black mb-3">{product.name}</h2>
+                {product.price && (
+                    <p className="text-3xl font-bold text-yellow-600 mb-3">${product.price.toFixed(2)}</p>
+                )}
                 <p className="text-sm mt-2 text-gray-700">{product.description}</p>
                 <p className="mt-3 text-sm font-semibold text-black">Ingredients: <span className="font-normal text-gray-600">{product.ingredients?.join(', ')}</span></p>
 

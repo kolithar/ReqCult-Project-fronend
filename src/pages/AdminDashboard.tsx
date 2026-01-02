@@ -34,6 +34,12 @@ const AdminDashboard: React.FC = () => {
         fetchAll();
     };
 
+    const handleUpdatePrice = async (id: string, newPrice: string) => {
+        const priceValue = newPrice ? parseFloat(newPrice) : undefined;
+        await API.put(`/products/${id}`, { price: priceValue });
+        fetchAll();
+    };
+
     return (
         <div className="p-6 max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold text-black mb-6">Admin Panel</h2>
@@ -51,20 +57,40 @@ const AdminDashboard: React.FC = () => {
                             {products.map(p => (
                                 <div key={p._id} className="bg-white border-2 border-yellow-400 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                                     <img src={p.image} alt={p.name} className="h-36 w-full object-cover rounded-lg" />
-                                    <div className="flex justify-between items-center mt-3">
-                                        <div>
-                                            <h4 className="font-bold text-black">{p.name}</h4>
-                                            <p className="text-sm text-gray-600">{p.category}</p>
-                                            {p.isFamous && <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded font-semibold mt-1 inline-block">⭐ Famous</span>}
+                                    <div className="mt-3">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h4 className="font-bold text-black">{p.name}</h4>
+                                                <p className="text-sm text-gray-600">{p.category}</p>
+                                                {p.isFamous && <span className="text-xs bg-yellow-400 text-black px-2 py-1 rounded font-semibold mt-1 inline-block">⭐ Famous</span>}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button 
+                                                    onClick={()=>handleToggleFamous(p._id, p.isFamous || false)} 
+                                                    className={`px-3 py-1 rounded-lg text-white font-semibold ${p.isFamous ? 'bg-yellow-400 text-black hover:bg-yellow-300' : 'bg-gray-600 hover:bg-gray-700'}`}
+                                                >
+                                                    {p.isFamous ? '⭐' : '⭐'}
+                                                </button>
+                                                <button onClick={()=>handleDelete(p._id)} className="px-3 py-1 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700">Delete</button>
+                                            </div>
                                         </div>
-                                        <div className="flex gap-2">
-                                            <button 
-                                                onClick={()=>handleToggleFamous(p._id, p.isFamous || false)} 
-                                                className={`px-3 py-1 rounded-lg text-white font-semibold ${p.isFamous ? 'bg-yellow-400 text-black hover:bg-yellow-300' : 'bg-gray-600 hover:bg-gray-700'}`}
-                                            >
-                                                {p.isFamous ? '⭐' : '⭐'}
-                                            </button>
-                                            <button onClick={()=>handleDelete(p._id)} className="px-3 py-1 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700">Delete</button>
+                                        <div className="mt-3 pt-3 border-t-2 border-yellow-200">
+                                            <label className="block text-sm font-semibold text-black mb-1">Price ($)</label>
+                                            <div className="flex gap-2">
+                                                <input 
+                                                    type="number" 
+                                                    step="0.01" 
+                                                    min="0" 
+                                                    defaultValue={p.price || ''} 
+                                                    onBlur={(e) => {
+                                                        if (e.target.value !== (p.price?.toString() || '')) {
+                                                            handleUpdatePrice(p._id, e.target.value);
+                                                        }
+                                                    }}
+                                                    className="flex-1 border-2 border-yellow-400 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black"
+                                                    placeholder="0.00"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

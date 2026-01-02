@@ -9,6 +9,7 @@ const AdminProductForm: React.FC<{ onCreated: ()=>void }> = ({ onCreated }) => {
     const [ingredients, setIngredients] = useState('');
     const [alcoholBrands, setAlcoholBrands] = useState('');
     const [isFamous, setIsFamous] = useState(false);
+    const [price, setPrice] = useState<string>('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -16,9 +17,10 @@ const AdminProductForm: React.FC<{ onCreated: ()=>void }> = ({ onCreated }) => {
             name, image, category, description,
             ingredients: ingredients.split(',').map(s=>s.trim()).filter(Boolean),
             alcoholBrands: alcoholBrands.split(',').map(s=>s.trim()).filter(Boolean),
-            isFamous
+            isFamous,
+            price: price ? parseFloat(price) : undefined
         });
-        setName(''); setImage(''); setDescription(''); setIngredients(''); setAlcoholBrands(''); setIsFamous(false);
+        setName(''); setImage(''); setDescription(''); setIngredients(''); setAlcoholBrands(''); setIsFamous(false); setPrice('');
         onCreated();
     };
 
@@ -35,6 +37,7 @@ const AdminProductForm: React.FC<{ onCreated: ()=>void }> = ({ onCreated }) => {
             <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="Description" className="w-full border-2 border-yellow-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black" />
             <input value={ingredients} onChange={e=>setIngredients(e.target.value)} placeholder="Ingredients (comma separated)" className="w-full border-2 border-yellow-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black" />
             <input value={alcoholBrands} onChange={e=>setAlcoholBrands(e.target.value)} placeholder="Alcohol brands (comma separated, for custom)" className="w-full border-2 border-yellow-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black" />
+            <input type="number" step="0.01" min="0" value={price} onChange={e=>setPrice(e.target.value)} placeholder="Price ($)" className="w-full border-2 border-yellow-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-black" />
             <label className="flex items-center gap-2 p-3 bg-yellow-50 rounded-lg border-2 border-yellow-200">
                 <input type="checkbox" checked={isFamous} onChange={e=>setIsFamous(e.target.checked)} className="w-5 h-5 text-yellow-400 focus:ring-yellow-400" />
                 <span className="font-semibold text-black">Mark as Famous Item</span>
