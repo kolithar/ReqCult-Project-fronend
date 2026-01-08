@@ -40,6 +40,20 @@ const AdminDashboard: React.FC = () => {
         fetchAll();
     };
 
+    const downloadOrdersPDF = async () => {
+        const res = await API.get('/pdf/orders', {
+            responseType: 'blob',
+        });
+
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'all-orders.pdf';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    };
+
     return (
         <div className="p-6 max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold text-black mb-6">Admin Panel</h2>
@@ -99,7 +113,17 @@ const AdminDashboard: React.FC = () => {
                     </section>
 
                     <section className="bg-white rounded-lg shadow-lg border-4 border-yellow-400 p-6">
-                        <h3 className="text-2xl font-bold text-black mb-4">Orders</h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-2xl font-bold text-black">Orders</h3>
+
+                            <button
+                                onClick={downloadOrdersPDF}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold"
+                            >
+                                Download Orders PDF
+                            </button>
+                        </div>
+
                         <div className="mt-2 overflow-x-auto">
                             <table className="w-full table-auto border-2 border-yellow-400">
                                 <thead className="bg-yellow-400">
@@ -113,10 +137,18 @@ const AdminDashboard: React.FC = () => {
                                 <tbody>
                                 {orders.map(o => (
                                     <tr key={o._id} className="border-t-2 border-yellow-400 hover:bg-yellow-50">
-                                        <td className="p-3 border-2 border-yellow-400 text-black">{o.userId?.email}</td>
-                                        <td className="p-3 border-2 border-yellow-400 text-black font-semibold">{o.productId?.name}</td>
-                                        <td className="p-3 border-2 border-yellow-400 text-black font-bold text-yellow-600">${o.totalAmount}</td>
-                                        <td className="p-3 border-2 border-yellow-400 text-black">{new Date(o.createdAt).toLocaleString()}</td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black">
+                                            {o.userId?.email}
+                                        </td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black font-semibold">
+                                            {o.productId?.name}
+                                        </td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black font-bold text-yellow-600">
+                                            ${o.totalAmount}
+                                        </td>
+                                        <td className="p-3 border-2 border-yellow-400 text-black">
+                                            {new Date(o.createdAt).toLocaleString()}
+                                        </td>
                                     </tr>
                                 ))}
                                 </tbody>
